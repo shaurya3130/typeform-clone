@@ -8,7 +8,7 @@ A full-stack clone of [Typeform](https://www.typeform.com): build forms in a thr
 | **Backend** | Python 3.11+ · FastAPI · SQLAlchemy 2 · Pydantic 2 |
 | **Database** | SQLite (schema below) |
 
-**Live demo:** _add your Vercel URL here_ · **API docs:** `<backend-url>/docs`
+**Live demo:** https://typeform-clone-omega-puce.vercel.app · **API docs:** https://typeform-clone-api-production.up.railway.app/docs
 
 ---
 
@@ -71,17 +71,15 @@ Try the seeded public forms at `http://localhost:3000/to/feedback` and `http://l
 
 ## Deployment
 
-**Backend → Render** (a `render.yaml` blueprint is included)
-1. New → *Blueprint* → pick this repo, or New → *Web Service* with root directory `backend`.
-2. Build: `pip install -r requirements.txt` · Start: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-3. Set `CORS_ORIGINS` to your Vercel URL after step 2 below.
+| Part | Platform | Notes |
+|---|---|---|
+| Frontend | **Vercel** | Root directory `frontend`, env `NEXT_PUBLIC_API_URL=https://<backend>/api` |
+| Backend | **Railway** | Root directory `backend`, start `uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
+| Database | **SQLite on a Railway volume** | Volume mounted at `/data`, `DATABASE_URL=sqlite:////data/typeform.db` |
 
-**Frontend → Vercel**
-1. Import the repo, set **Root Directory** to `frontend` (framework auto-detected).
-2. Add `NEXT_PUBLIC_API_URL=https://<your-render-service>.onrender.com/api` and deploy.
+Backend environment variables: `DATABASE_URL`, `CORS_ORIGINS` (the Vercel URL), `SEED_ON_STARTUP=true`.
 
-> Render's free tier has an ephemeral disk, so the SQLite file resets on redeploy/restart; the app re-seeds itself so the demo is always usable. Attach a persistent disk (and point `DATABASE_URL` at it) for durable data. The free tier also sleeps after inactivity — the first request can take ~30 s.
-
+The SQLite file lives on a persistent volume, so forms and responses survive restarts and redeploys. On first boot the empty database is seeded automatically. (`render.yaml` is kept as an alternative deployment option.)
 ---
 
 ## Architecture
