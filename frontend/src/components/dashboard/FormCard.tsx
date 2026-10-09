@@ -24,11 +24,11 @@ export default function FormCard({ form, onRename, onDuplicate, onDelete, onCopy
   return (
     <Link
       href={`/forms/${form.id}/create`}
-      className="group flex flex-col overflow-hidden rounded-lg border border-line bg-white transition-shadow hover:shadow-[0_6px_18px_rgba(0,0,0,0.08)]"
+      className="group flex flex-col rounded-lg border border-line bg-white transition-shadow hover:shadow-[0_6px_18px_rgba(0,0,0,0.08)]"
     >
       {/* Thumbnail rendered with the form's own theme */}
       <div
-        className="relative flex aspect-[16/11] items-center justify-center px-4 text-center"
+        className="relative flex aspect-[16/11] items-center justify-center rounded-t-lg px-4 text-center"
         style={{ background: theme.background, color: theme.question, fontFamily: theme.font }}
       >
         <span className="line-clamp-3 text-[15px] leading-snug">{form.title}</span>
